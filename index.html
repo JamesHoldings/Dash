@@ -1,25 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.8, maximum-scale=1.0, user-scalable=no">
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/JamesHoldings/Dash/main/icon.png">
-
-    <title>eWeLink Dash</title>
-
-    <script type="module" src="https://unpkg.com/x-frame-bypass"></script>
-
-    <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
-        iframe { width: 100%; height: 100%; border: none; }
-    </style>
+    <title>Ewelink Dash</title>
+    
+    <script>
+        // Redirects to the real dash immediately
+        // This 'tricks' iOS into keeping the app-like behavior
+        window.location.replace("https://cast.ewelink.cc");
+    </script>
 </head>
 <body>
-
-    <iframe is="x-frame-bypass" src="https://cast.ewelink.cc/#/control-panel"></iframe>
-
+    <p>Redirecting to Dashboard...</p>
 </body>
 </html>

@@ -3,53 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <title>eWeLink Zoomed Dash</title>
-
+    <title>Dash Wrapper</title>
     <style>
-        /* Remove all margins and prevent the main page from scrolling */
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
             width: 100%;
-            overflow: hidden;
-            background-color: #000;
+            overflow: hidden; 
+            background: #000; 
         }
 
-        /* The Container hides the overflow of the oversized iframe */
-        .iframe-wrapper {
+        /* Container ensures no scrollbars appear from the oversized iframe */
+        .wrapper {
             width: 100vw;
             height: 100vh;
             overflow: hidden;
             position: relative;
         }
 
-        iframe {
-            border: none;
+        iframe { 
+            border: none; 
             position: absolute;
             top: 0;
             left: 0;
-
-            /* THE ZOOM MATH:
-               To zoom out to 80% (0.8), we make the iframe 125% big (1 / 0.8 = 1.25).
-               To zoom out to 70% (0.7), make it 142.8% big (1 / 0.7 = 1.428).
+            
+            /* MATH: 1 / 0.6 = 166.66% 
+               This makes the 'paper' bigger so the 'ink' looks smaller.
             */
-            width: 125%; 
-            height: 125%;
+            width: 167%; 
+            height: 167%; 
 
-            /* This is the actual "Windows Zoom" effect */
-            transform: scale(0.8); 
-            transform-origin: 0 0;
+            /* Shrinks everything down to 60% of original size */
+            transform: scale(0.6); 
+            transform-origin: 0 0; 
         }
     </style>
 </head>
 <body>
 
-    <div class="iframe-wrapper">
+    <div class="wrapper">
         <iframe 
             src="https://cast.ewelink.cc" 
             sandbox="allow-forms allow-scripts allow-same-origin allow-popups"

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Home Control</title>
+    <title>Home Dash</title>
     <style>
         body, html { 
             margin: 0; padding: 0; 
@@ -42,12 +42,12 @@
             border: none; 
             position: absolute;
             top: 0; left: 0;
-            /* Using more precise math for 0.6 scale (1 / 0.6 = 1.6666) */
+            
+            /* Precise math for 0.6 scale (1 / 0.6 = 1.6667) */
             width: 166.67%; 
-            height: 170%; 
+            height: 166.67%; 
             
             opacity: 0;
-            /* Ensure it stays at the top left and scales precisely */
             transform: scale(0.6); 
             transform-origin: 0 0; 
             transition: opacity 0.8s ease-in;
@@ -88,7 +88,6 @@
             }, 1500);
         };
 
-        // Prevent scrolling and bounces
         document.addEventListener('touchmove', function(e) {
             if (e.touches.length > 1) e.preventDefault();
         }, { passive: false });
@@ -97,7 +96,6 @@
             e.preventDefault();
         });
 
-        // Fail-safe reload
         setTimeout(() => {
             if(loader.style.display !== 'none') {
                 window.location.reload();

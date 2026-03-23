@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Home Control</title>
@@ -10,9 +10,10 @@
         body, html { 
             margin: 0; padding: 0; height: 100%; width: 100%;
             overflow: hidden; background: #000; 
-            /* 1. DISBALE GESTURES: Prevents browser-level swipes & pinches */
-            touch-action: none; 
+            /* 1. PHYSICAL LOCK: Stops the 'rubber band' bounce at the CSS level */
+            overscroll-behavior: none;
             -webkit-overflow-scrolling: none;
+            touch-action: none; 
         }
 
         .wrapper {
@@ -20,7 +21,6 @@
             height: 100vh;
             overflow: hidden;
             position: relative;
-            /* 2. POINTER CONTROL: Ensures clicks pass through correctly */
             touch-action: none;
         }
 
@@ -28,11 +28,12 @@
             border: none; 
             position: absolute;
             top: 0; left: 0;
+            /* 60% Zoom Logic */
             width: 167%; height: 167%; 
             transform: scale(0.6); 
             transform-origin: 0 0; 
             
-            /* 3. ALLOW CLICKS: Ensures the iframe still accepts taps */
+            /* ALLOW CLICKS: Ensures the iframe still accepts taps */
             pointer-events: auto;
             touch-action: manipulation;
         }
@@ -49,15 +50,23 @@
     </div>
 
     <script>
-        // 4. THE SWIPE KILLER: Programmatically blocks 'dragging' the page
-        document.addEventListener('touchmove', function(e) {
-            e.preventDefault();
+        // THE NUCLEAR SWIPE KILLER
+        // This blocks the native iPad 'rubber band' effect entirely
+        window.addEventListener('touchmove', function(e) {
+            if (e.target.id !== 'kiosk-frame') {
+                e.preventDefault();
+            }
         }, { passive: false });
 
-        // Allows clicking but blocks the "bounce" effect on old iOS
+        // Blocks 'Pinch to Zoom' which can mess up your layout
         document.addEventListener('gesturestart', function(e) {
             e.preventDefault();
         });
+
+        // Optional: Auto-reload every 12 hours to keep eWeLink connection alive
+        setTimeout(function() {
+            window.location.reload();
+        }, 43200000);
     </script>
 </body>
 </html>

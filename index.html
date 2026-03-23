@@ -4,38 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Home Dash</title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Home Control</title>
     <style>
         body, html { 
             margin: 0; padding: 0; 
             height: 100%; width: 100%;
             overflow: hidden; background: #000; 
             touch-action: none; 
-            -webkit-overflow-scrolling: none;
-        }
-
-        #loader {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            color: #444;
-            font-family: sans-serif;
-            transition: opacity 0.5s ease;
         }
 
         .wrapper {
-            width: 100vw; 
+            width: 100%; 
             height: 100vh;
             overflow: hidden; 
             position: relative;
             background: #000;
-            display: flex;
         }
 
         iframe { 
@@ -43,9 +27,11 @@
             position: absolute;
             top: 0; left: 0;
             
-            /* Precise math for 0.6 scale (1 / 0.6 = 1.6667) */
             width: 166.67%; 
-            height: 166.67%; 
+            
+            /* THE FIX: Subtracting 40px (scaled) to pull the bottom up. 
+               Adjust this number (e.g., -50px or -60px) if still cut off. */
+            height: calc(166.67% - 40px); 
             
             opacity: 0;
             transform: scale(0.6); 
@@ -56,6 +42,14 @@
             touch-action: manipulation;
         }
 
+        #loader {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #000; display: flex;
+            align-items: center; justify-content: center;
+            z-index: 999; color: #444; font-family: sans-serif;
+            transition: opacity 0.5s ease;
+        }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -88,19 +82,14 @@
             }, 1500);
         };
 
-        document.addEventListener('touchmove', function(e) {
-            if (e.touches.length > 1) e.preventDefault();
+        // Aggressive swipe killer for standalone mode
+        window.addEventListener('touchmove', function(e) {
+            e.preventDefault();
         }, { passive: false });
 
         document.addEventListener('gesturestart', function(e) {
             e.preventDefault();
         });
-
-        setTimeout(() => {
-            if(loader.style.display !== 'none') {
-                window.location.reload();
-            }
-        }, 15000);
     </script>
 </body>
 </html>

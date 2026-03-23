@@ -8,37 +8,33 @@
     <title>Dash Wrapper</title>
     <style>
         body, html { 
-            margin: 0; 
-            padding: 0; 
-            height: 100%; 
-            width: 100%;
-            overflow: hidden; 
-            background: #000; 
+            margin: 0; padding: 0; height: 100%; width: 100%;
+            overflow: hidden; background: #000; 
+            /* 1. DISBALE GESTURES: Prevents browser-level swipes & pinches */
+            touch-action: none; 
+            -webkit-overflow-scrolling: none;
         }
 
-        /* Container ensures no scrollbars appear from the oversized iframe */
         .wrapper {
             width: 100vw;
             height: 100vh;
             overflow: hidden;
             position: relative;
+            /* 2. POINTER CONTROL: Ensures clicks pass through correctly */
+            touch-action: none;
         }
 
         iframe { 
             border: none; 
             position: absolute;
-            top: 0;
-            left: 0;
-            
-            /* MATH: 1 / 0.6 = 166.66% 
-               This makes the 'paper' bigger so the 'ink' looks smaller.
-            */
-            width: 167%; 
-            height: 167%; 
-
-            /* Shrinks everything down to 60% of original size */
+            top: 0; left: 0;
+            width: 167%; height: 167%; 
             transform: scale(0.6); 
             transform-origin: 0 0; 
+            
+            /* 3. ALLOW CLICKS: Ensures the iframe still accepts taps */
+            pointer-events: auto;
+            touch-action: manipulation;
         }
     </style>
 </head>
@@ -52,5 +48,16 @@
         </iframe>
     </div>
 
+    <script>
+        // 4. THE SWIPE KILLER: Programmatically blocks 'dragging' the page
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Allows clicking but blocks the "bounce" effect on old iOS
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+    </script>
 </body>
 </html>

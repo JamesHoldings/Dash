@@ -8,13 +8,13 @@
     <title>Home Control</title>
     <style>
         body, html { 
-            margin: 0; padding: 0; height: 100%; width: 100%;
+            margin: 0; padding: 0; 
+            height: 100%; width: 100%;
             overflow: hidden; background: #000; 
             touch-action: none; 
             -webkit-overflow-scrolling: none;
         }
 
-        /* 1. LOADING OVERLAY: Shown until iframe is ready */
         #loader {
             position: fixed;
             top: 0; left: 0;
@@ -30,27 +30,33 @@
         }
 
         .wrapper {
-            width: 100vw; height: 100vh;
-            overflow: hidden; position: relative;
+            width: 100vw; 
+            height: 100vh;
+            overflow: hidden; 
+            position: relative;
             background: #000;
+            display: flex;
         }
 
         iframe { 
             border: none; 
             position: absolute;
             top: 0; left: 0;
-            width: 167%; height: 167%; 
+            /* Using more precise math for 0.6 scale (1 / 0.6 = 1.6666) */
+            width: 166.67%; 
+            height: 166.67%; 
             
-            /* 2. PRELOAD POSITIONING: 
-               Starts invisible and uses translate3d to force GPU rendering */
             opacity: 0;
-            transform: scale(0.6) translate3d(0,0,0); 
+            /* Ensure it stays at the top left and scales precisely */
+            transform: scale(0.6); 
             transform-origin: 0 0; 
             transition: opacity 0.8s ease-in;
             
             pointer-events: auto;
             touch-action: manipulation;
         }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -70,17 +76,11 @@
         </iframe>
     </div>
 
-    <style>
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-
     <script>
         const frame = document.getElementById('kiosk-frame');
         const loader = document.getElementById('loader');
 
-        // 3. THE REVEAL LOGIC: Only show once fully loaded
         frame.onload = function() {
-            // Slight delay ensures the internal eWeLink JS has rendered the tiles
             setTimeout(() => {
                 frame.style.opacity = '1';
                 loader.style.opacity = '0';
@@ -88,16 +88,16 @@
             }, 1500);
         };
 
-        // 4. THE GESTURE LOCKS
+        // Prevent scrolling and bounces
         document.addEventListener('touchmove', function(e) {
-            e.preventDefault();
+            if (e.touches.length > 1) e.preventDefault();
         }, { passive: false });
 
         document.addEventListener('gesturestart', function(e) {
             e.preventDefault();
         });
 
-        // Preload hack: Refresh page if it gets stuck on a white screen for > 15s
+        // Fail-safe reload
         setTimeout(() => {
             if(loader.style.display !== 'none') {
                 window.location.reload();

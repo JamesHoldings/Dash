@@ -1,55 +1,189 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
     <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
     <title>Home Control</title>
+
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
-        .wrapper { width: 100%; height: 100vh; position: relative; }
-        
-        #kiosk-frame { 
-            border: none; width: 100%; height: 100%;
-            /* DARK MODE FIX */
-            filter: invert(92%) hue-rotate(180deg);
-            -webkit-filter: invert(92%) hue-rotate(180deg);
-            background: #000;
+
+        body, html { 
+
+            margin: 0; padding: 0; 
+
+            height: 100%; width: 100%;
+
+            overflow: hidden; background: #000; 
+
+            touch-action: none; 
+
         }
+
+
+
+        .wrapper {
+
+            width: 100%; 
+
+            height: 100vh;
+
+            overflow: hidden; 
+
+            position: relative;
+
+            background: #000;
+
+        }
+
+
+
+        iframe { 
+
+            border: none; 
+
+            position: absolute;
+
+            top: 0; left: 0;
+
+            
+
+            width: 166.67%; 
+
+            
+
+            /* THE FIX: Subtracting 40px (scaled) to pull the bottom up. 
+
+               Adjust this number (e.g., -50px or -60px) if still cut off. */
+
+            height: calc(166.67% - 20px); 
+
+            
+
+            opacity: 0;
+
+            transform: scale(0.6); 
+
+            transform-origin: 0 0; 
+
+            transition: opacity 0.8s ease-in;
+
+            
+
+            pointer-events: auto;
+
+            touch-action: manipulation;
+
+        }
+
+
 
         #loader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; align-items: center; justify-content: center;
-            z-index: 9; transition: opacity 0.2s;
+
+            position: fixed; top: 0; left: 0;
+
+            width: 100%; height: 100%;
+
+            background: #000; display: flex;
+
+            align-items: center; justify-content: center;
+
+            z-index: 999; color: #444; font-family: sans-serif;
+
+            transition: opacity 0.5s ease;
+
         }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
     </style>
+
 </head>
+
 <body>
+
+
+
     <div id="loader">
-        <div style="border: 3px solid #333; border-top: 3px solid #00aaff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite;"></div>
+
+        <div style="text-align: center;">
+
+            <div style="border: 3px solid #333; border-top: 3px solid #00aaff; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto 10px;"></div>
+
+            <span>Initialising Dash...</span>
+
+        </div>
+
     </div>
+
+
 
     <div class="wrapper">
+
         <iframe 
-            src="https://calendar.google.com/calendar/embed?src=74c850f5267572cb4bd67bbdb8ac0e20b85e7d89d20262de68ef33b542aec7da@group.calendar.google.com&ctz=Africa/Johannesburg&mode=AGENDA&showTitle=0&showNav=0&showPrint=0&showTabs=0&showCalendars=0&showTz=0" 
-            id="kiosk-frame" 
-            scrolling="yes"
-            frameborder="0">
+
+            src="https://cast.ewelink.cc/#/control-panel" 
+
+            sandbox="allow-forms allow-scripts allow-same-origin allow-popups"
+
+            id="kiosk-frame">
+
         </iframe>
+
     </div>
 
+
+
     <script>
+
         const frame = document.getElementById('kiosk-frame');
+
         const loader = document.getElementById('loader');
 
+
+
         frame.onload = function() {
-            loader.style.opacity = '0';
-            setTimeout(() => loader.style.display = 'none', 200);
+
+            setTimeout(() => {
+
+                frame.style.opacity = '1';
+
+                loader.style.opacity = '0';
+
+                setTimeout(() => loader.style.display = 'none', 500);
+
+            }, 1500);
+
         };
 
-        // Prevent iOS bounce
-        window.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+
+
+        // Aggressive swipe killer for standalone mode
+
+        window.addEventListener('touchmove', function(e) {
+
+            e.preventDefault();
+
+        }, { passive: false });
+
+
+
+        document.addEventListener('gesturestart', function(e) {
+
+            e.preventDefault();
+
+        });
+
     </script>
+
 </body>
+
 </html>
